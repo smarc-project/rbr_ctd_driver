@@ -1,0 +1,7 @@
+<launch>
+    <node pkg="rbr_ctd_driver" exec="serial_reader_ctd">
+        <param name="port" value="/dev/ttyUSB0"/>
+        <param name="baudrate" value="115200"/>
+    </node>
+    <node pkg="rbr_ctd_driver" exec="rbr_ctd_driver"/>
+</launch>
