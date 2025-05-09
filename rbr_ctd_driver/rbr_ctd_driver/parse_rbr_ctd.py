@@ -1,6 +1,6 @@
 import rclpy
 from rclpy.node import Node
-from rbr_ctd_interfaces.msg import RBRCTD
+from rbr_ctd_interfaces.msg import RBRCTD, Topics
 import rclpy.time
 from std_msgs.msg import String
 
@@ -8,13 +8,13 @@ class CTDDecoder(Node):
     # Example data:
     # 2000-01-01 00:04:27.000, 0.0029, 21.7070, 10.2192, 0.0867, 0.0860, 0.0110, 1.0000, 22.0666
     
-    def __init__(self, input_topic, output_topic):
+    def __init__(self):
         super().__init__('rbr_ctd_driver')
         self.get_logger().info("Starting RBR CTD driver node to decode raw CTD data")
-        self.publisher = self.create_publisher(RBRCTD, output_topic, 10)
+        self.publisher = self.create_publisher(RBRCTD, Topics.CTD_TOPIC, 10)
         self.subscriber = self.create_subscription(
             String,
-            input_topic,
+            Topics.CTD_RAW_TOPIC,
             self.listener_callback,
             10
         )
@@ -42,11 +42,7 @@ class CTDDecoder(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    # TODO: Parse in/out topic from config file or launch file
-    node = CTDDecoder(
-        input_topic='/ctd/raw',
-        output_topic='/ctd'
-    )
+    node = CTDDecoder()
     rclpy.spin(node)
     rclpy.shutdown()
 

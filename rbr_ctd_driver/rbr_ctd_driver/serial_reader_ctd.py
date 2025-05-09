@@ -1,5 +1,6 @@
 import rclpy
 from std_msgs.msg import String
+from rbr_ctd_interfaces.msg import Topics
 import serial
 import time
 
@@ -12,7 +13,7 @@ def main():
     rate = node.create_rate(10)  # 10 Hz
     
     # Create a publisher to publish the data
-    publisher = node.create_publisher(String, '/ctd/raw', 10)
+    publisher = node.create_publisher(String, Topics.CTD_RAW_TOPIC, 10)
     
     # Open the serial port
     connected = False
