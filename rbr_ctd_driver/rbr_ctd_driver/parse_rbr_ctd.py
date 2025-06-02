@@ -1,7 +1,6 @@
 import rclpy
 from rclpy.node import Node
-from rbr_ctd_interfaces.msg import RBRCTD, Topics
-import rclpy.time
+from rbr_ctd_interfaces.msg import RBRCTD
 from std_msgs.msg import String
 
 
@@ -32,10 +31,13 @@ class CTDDecoder(Node):
     def __init__(self):
         super().__init__('rbr_ctd_driver')
         self.get_logger().info("Starting RBR CTD driver node to decode raw CTD data")
-        self.publisher = self.create_publisher(RBRCTD, Topics.CTD_TOPIC, 10)
+        self.input_topic = self.declare_parameter("input_topic", "input_topic").value
+        self.output_topic = self.declare_parameter("output_topic", "output_topic").value
+        print(f"Input topic: {self.input_topic}, Output topic: {self.output_topic}")
+        self.publisher = self.create_publisher(RBRCTD, self.output_topic, 10)
         self.subscriber = self.create_subscription(
             String,
-            Topics.CTD_RAW_TOPIC,
+            self.input_topic,
             self.listener_callback,
             10
         )

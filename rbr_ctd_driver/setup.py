@@ -25,7 +25,6 @@ setup(
     entry_points={
         'console_scripts': [
             'rbr_ctd_driver = rbr_ctd_driver.parse_rbr_ctd:main',
-            'serial_reader_ctd = rbr_ctd_driver.serial_reader_ctd:main',
         ],
     },
 )
